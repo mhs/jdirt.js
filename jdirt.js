@@ -18,8 +18,8 @@
 	$.extend($.fn.jDirt, {
 		checkChange: function (eventObject) {
 			var target = $(eventObject.target),
-				newVal = target.val(),
-				orgVal = target.data("originalState");
+			    newVal = target.val(),
+			    orgVal = target.data("originalState");
 					
 			if(newVal == orgVal) {
 				params.resetCallback();
