@@ -1,41 +1,34 @@
 (function( $ ) {
 	
-  $.fn.jDirtResetState = function() {
-	return this.each(function(index, item){
-	  $(item).data("originalState", $(item).val());
-	});
+  $.fn.jDirtCommitState = function() {
+  	return this.each(function(){
+  	  var $this = $(this);
+  	  $this.data("jdirt-original-state", $this.val());
+      	  $this.trigger("jdirt:reset");
+  	});
   };
 
-  $.fn.jDirt = function(options) {
+  $.fn.jDirt = function(options) {	
+  	$.extend($.fn.jDirt, {
+  		checkChange: function (eventObject) {
+  			var target = $(eventObject.target),
+  			    newVal = target.val(),
+  			    orgVal = target.data("jdirt-original-state");
+			
+  			if(newVal === orgVal) {
+  				target.trigger("jdirt:reset");
+  			} else {
+  				target.trigger("jdirt:dirty");
+  			}
+  		} 
+  	});
 	
-	var params = {
-		resetCallback : function() { /* DO NOTHING */ },
-		changeCallback: function() { /* DO NOTHING */ }
-	};
-
-	$.extend(params, options);
-	
-	$.extend($.fn.jDirt, {
-		checkChange: function (eventObject) {
-			var target = $(eventObject.target),
-			    newVal = target.val(),
-			    orgVal = target.data("originalState");
-					
-			if(newVal == orgVal) {
-				params.resetCallback();
-			} else {
-				params.changeCallback();
-			}
-		} 
-	});
-	
-	return this.each(function(index, item){
-		var val = $(item).val();
-		$(item).data("originalState", val);
-		$(item).originalState = val;
-		$(item).keyup(function(eventObject) {$.fn.jDirt.checkChange(eventObject)} );
-	});
-  	
+  	return this.each(function(){
+  		var $this = $(this), val = $this.val();
+  		$this.data("jdirt-original-state", val);
+  		$this.originalState = val;
+  		$this.keyup($.fn.jDirt.checkChange);
+  	});  	
   };
 
 })( jQuery );
