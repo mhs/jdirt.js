@@ -3,17 +3,18 @@
   $.fn.jDirtCommitState = function() {
   	return this.each(function(){
   	  var $this = $(this);
-  	  $this.data("jdirt-original-state", $this.val());
-      	  $this.trigger("jdirt:reset");
+  	  $this.attr("data-jdirt-original-state", $this.serialize());
+  	  $this.data("jdirt-original-value", $this.val());
+      $this.trigger("jdirt:reset");
   	});
   };
 
   $.fn.jDirt = function(options) {	
   	$.extend($.fn.jDirt, {
   		checkChange: function (eventObject) {
-  			var target = $(eventObject.target),
-  			    newVal = target.val(),
-  			    orgVal = target.data("jdirt-original-state");
+  			var target = $(eventObject.target).closest('*[data-jdirt-original-state]'),
+  			    newVal = target.serialize(),
+  			    orgVal = target.attr("data-jdirt-original-state");
 			
   			if(newVal === orgVal) {
   				target.trigger("jdirt:reset");
@@ -24,10 +25,12 @@
   	});
 	
   	return this.each(function(){
-  		var $this = $(this), val = $this.val();
-  		$this.data("jdirt-original-state", val);
+  		var $this = $(this), val = $this.serialize();
+  		$this.attr("data-jdirt-original-state", val);
+  		$this.data("jdirt-original-value", $this.val());
   		$this.originalState = val;
   		$this.keyup($.fn.jDirt.checkChange);
+  		$this.change($.fn.jDirt.checkChange);
   	});  	
   };
 
