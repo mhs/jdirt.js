@@ -15,15 +15,15 @@
   			var target = $(eventObject.target).closest('*[data-jdirt-original-state]'),
   			    newVal = target.serialize(),
   			    orgVal = target.attr("data-jdirt-original-state");
-			
+
   			if(newVal === orgVal) {
   				target.trigger("jdirt:reset");
   			} else {
   				target.trigger("jdirt:dirty");
   			}
-  		} 
+  		}
   	});
-	
+  	
   	return this.each(function(){
   		var $this = $(this), val = $this.serialize();
   		$this.attr("data-jdirt-original-state", val);
@@ -31,7 +31,13 @@
   		$this.originalState = val;
   		$this.keyup($.fn.jDirt.checkChange);
   		$this.change($.fn.jDirt.checkChange);
-  	});  	
   };
 
+  $.fn.jDirtRestore = function(){
+    this.each(function(){
+      var $this = $(this);
+      $this.deserialize($this.data("jdirt-original-state"));
+      $.fn.jDirt.checkChange({target: this});
+    });
+  };
 })( jQuery );
