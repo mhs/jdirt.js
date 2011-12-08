@@ -9,38 +9,38 @@
  *   * https://github.com/itsadok/jquery.deserialize
  */
 (function( $ ) {
-	
+  
   $.fn.jDirtCommitState = function() {
-  	return this.each(function(){
-  	  var $this = $(this);
-  	  $this.attr("data-jdirt-original-state", $this.serialize());
-  	  $this.data("jdirt-original-value", $this.val());
+    return this.each(function(){
+      var $this = $(this);
+      $this.attr("data-jdirt-original-state", $this.serialize());
+      $this.data("jdirt-original-value", $this.val());
       $this.trigger("jdirt:reset");
-  	});
+    });
   };
 
-  $.fn.jDirt = function(options) {	
-  	$.extend($.fn.jDirt, {
-  		checkChange: function (eventObject) {
-  			var target = $(eventObject.target).closest('*[data-jdirt-original-state]'),
-  			    newVal = target.serialize(),
-  			    orgVal = target.attr("data-jdirt-original-state");
+  $.fn.jDirt = function(options) {  
+    $.extend($.fn.jDirt, {
+      checkChange: function (eventObject) {
+        var target = $(eventObject.target).closest('*[data-jdirt-original-state]'),
+            newVal = target.serialize(),
+            orgVal = target.attr("data-jdirt-original-state");
 
-  			if(newVal === orgVal) {
-  				target.trigger("jdirt:reset");
-  			} else {
-  				target.trigger("jdirt:dirty");
-  			}
-  		}
-  	});
-  	
-  	return this.each(function(){
-  		var $this = $(this), val = $this.serialize();
-  		$this.attr("data-jdirt-original-state", val);
-  		$this.data("jdirt-original-value", $this.val());
-  		$this.originalState = val;
-  		$this.keyup($.fn.jDirt.checkChange);
-  		$this.change($.fn.jDirt.checkChange);
+        if(newVal === orgVal) {
+          target.trigger("jdirt:reset");
+        } else {
+          target.trigger("jdirt:dirty");
+        }
+      }
+    });
+    
+    return this.each(function(){
+      var $this = $(this), val = $this.serialize();
+      $this.attr("data-jdirt-original-state", val);
+      $this.data("jdirt-original-value", $this.val());
+      $this.originalState = val;
+      $this.keyup($.fn.jDirt.checkChange);
+      $this.change($.fn.jDirt.checkChange);
   };
 
   $.fn.jDirtRestore = function(){
