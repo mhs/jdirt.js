@@ -1,3 +1,13 @@
+/*
+ * jDirt JavaScript Library for jQuery
+ * https://github.com/mhs/jdirt.js
+ *
+ * Copyright 2011, Mutually Human Software
+ * Licensed under the MIT license.
+ *
+ * Dependencies on jquery.deserialize:
+ *   * https://github.com/itsadok/jquery.deserialize
+ */
 (function( $ ) {
 	
   $.fn.jDirtCommitState = function() {
