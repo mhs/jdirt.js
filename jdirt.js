@@ -48,7 +48,7 @@
     this.each(function(){
       var $this = $(this);
       $this.deserialize($this.data("jdirt-original-state"));
-      $.fn.jDirt.checkChange({target: this});
+      $this.trigger("jdirt:reset");
     });
   };
 })( jQuery );
