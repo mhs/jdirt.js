@@ -41,6 +41,7 @@
       $this.originalState = val;
       $this.keyup($.fn.jDirt.checkChange);
       $this.change($.fn.jDirt.checkChange);
+    });
   };
 
   $.fn.jDirtRestore = function(){
