@@ -47,7 +47,7 @@
   $.fn.jDirtRestore = function(){
     this.each(function(){
       var $this = $(this);
-      $this.deserialize($this.data("jdirt-original-state"));
+      $this.html($this.deserialize($this.data("jdirt-original-state")));
       $this.trigger("jdirt:reset");
     });
   };
