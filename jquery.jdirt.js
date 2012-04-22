@@ -1,6 +1,6 @@
 /*
  * jDirt JavaScript Library for jQuery
- * https://github.com/mhs/jdirt.js
+ * https://github.com/mhs/jquery.jdirt.js
  *
  * Copyright 2011, Mutually Human Software
  * Licensed under the MIT license.
