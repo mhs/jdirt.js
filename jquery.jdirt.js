@@ -13,7 +13,7 @@
   $.fn.jDirtCommitState = function() {
     return this.each(function(){
       var $this = $(this);
-      $this.attr("data-jdirt-original-state", $this.serialize());
+      $this.data("jdirt-original-state", $this.serialize());
       $this.data("jdirt-original-value", $this.val());
       $this.trigger("jdirt:reset");
     });
@@ -47,7 +47,7 @@
   $.fn.jDirtRestore = function(){
     this.each(function(){
       var $this = $(this);
-      $this.html($this.deserialize($this.data("jdirt-original-state")));
+      $this.deserialize($this.data("jdirt-original-state"));
       $this.trigger("jdirt:reset");
     });
   };
