@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+    <link href="stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+      <title>jDirt Demo</title>
+
+  </head>
+  <body class="index">
+    <div id="main" role="main">
+      <div class="container">
+
+  <h1 class="pull-right slogan">
+    jDirt
+    <small>U'r formz is dirty</small>
+  </h1>
+
+  <section>
+    
+    <article class="activate-state">
+      <div class="page-header">
+        <h1>
+          Activate on change
+          <small>sometimes it is good to know if they have been modified.</small>
+        </h1>
+      </div>
+      <div class="well">
+        <form class="example-form">
+          <div class="row">
+            <div class="span9">
+              <input name="changeable-input" type="text" value="Change me.. Change me.. Change me back.." size="100"/>
+              <div class="status">Nothing has changed</div>
+            </div>
+            <div class="pull-right">
+              <a class="btn btn-inverse code" href="#">Show Code!</a>
+            </div>
+          </div>
+        </form>
+        <div class="row code">
+          <div class="span12">
+            <code>
+              loading....
+            </code>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="revert-state">
+      <div class="page-header">
+        <h1>
+          Revert to original state
+          <small>sometimes you want it how it was.</small>
+        </h1>
+      </div>
+      <div class="well">
+        <form class="example-form">
+          <div class="row">
+            <div class="span9">
+              <input name="changeable-input" type="text" value="Shhh.. The button defines me. How ever I change, it changes me back." />
+            </div>
+            <div class="pull-right">
+              <a class="btn btn-inverse code" href="#">Show Code!</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="span12"><a class="btn disabled btn-danger btn-revert" href="#">Revert</a></div>
+          </div>
+        </form>
+        <div class="row code">
+          <div class="span12">
+            <code>
+              loading....
+            </code>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="save-state">
+      <div class="page-header">
+        <h1>
+          Save new state
+          <small>sometimes you want to keep your changes.</small>
+        </h1>
+      </div>
+      <div class="well">
+        <form class="example-form">
+          <div class="row">
+            <div class="span9">
+              <input name="changeable-input" value="change me, save me, change me, then revert me ya!"/>
+              <a class="btn btn-success disabled btn-save" href="#">Save</a>
+              <a class="btn btn-danger disabled btn-revert" href="#">Revert</a>
+            </div>
+            <div class="pull-right">
+              <a class="btn btn-inverse code" href="#">Show Code!</a>
+            </div>
+          </div>
+        </form>
+        <div class="row code">
+          <div class="span12">
+            <code>
+              loading....
+            </code>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="source-examples">
+
+  
+    <div class="modal fade" id="activate-state">
+      <div class="modal-header">
+        <h3>Activate Example</h3>
+      </div>
+      <div class="modal-body">
+        <pre>
+          
+$(function(){
+
+  // Register jdirt on the element that you
+  // wish to watch.
+  var form = $("article.activate-state form");
+  form.find("input").jDirtCommitState();
+  form.find("input").jDirt();
+
+
+  // Register the handlers.
+  // These will be called with the the original state 
+  $("article.activate-state").delegate("form input", "jdirt:dirty", changed);
+  $("article.activate-state").delegate("form input", "jdirt:reset", original);
+
+  var NoChange      = "Nothing has changed",
+      Change        = "Something has changed, maybe you should change it back..";
+
+
+  function changed() {
+    updateStatus(Change);
+  }
+
+  function original() {
+    updateStatus(NoChange);
+  }
+
+  function updateStatus(StatusText) {
+    var status = form.find(".status");
+    status.text(StatusText);
+  }
+  
+  updateStatus(NoChange);
+});
+        </pre>
+      </div>
+    </div>
+  
+    <div class="modal fade" id="revert-state">
+      <div class="modal-header">
+        <h3>Revert Example</h3>
+      </div>
+      <div class="modal-body">
+        <pre>
+          
+$(function(){
+
+  // Register jdirt on the element that you
+  // wish to watch.
+  var form = $("article.revert-state form");
+  form.jDirtCommitState();
+  form.jDirt();
+
+
+  // Register the handlers.
+  // These will be called with the the original state 
+  $("article.revert-state").delegate("form",  "jdirt:dirty", activateButton);
+  $("article.revert-state").delegate("form",  "jdirt:reset", deactivateButton);
+  $("article.revert-state").delegate(".btn-revert", "click",       revertState);
+
+
+  function activateButton() {
+    form.find(".btn-revert").removeClass("disabled");
+  }
+
+  function deactivateButton() {
+    form.find(".btn-revert").addClass("disabled"); 
+  }
+
+  function revertState(e) {
+    e.preventDefault();
+    form.jDirtRestore();
+  }
+
+  deactivateButton();
+});
+
+        </pre>
+      </div>
+    </div>
+  
+    <div class="modal fade" id="save-state">
+      <div class="modal-header">
+        <h3>Save Example</h3>
+      </div>
+      <div class="modal-body">
+        <pre>
+          
+$(function(){
+
+  // Register jdirt on the element that you
+  // wish to watch.
+  var form = $("article.save-state form");
+  form.jDirt();
+
+
+  // Register the handlers.
+  // These will be called with the the original state 
+  $("article.save-state").delegate("form",        "jdirt:dirty", activateButton);
+  $("article.save-state").delegate("form",        "jdirt:reset", deactivateButton);
+  $("article.save-state").delegate(".btn-save",   "click",       saveState);
+  $("article.save-state").delegate(".btn-revert", "click",       revertState);
+
+
+  function activateButton() {
+    form.find(".btn-revert, .btn-save").removeClass("disabled");
+  }
+
+  function deactivateButton() {
+    form.find(".btn-revert, .btn-save").addClass("disabled"); 
+  }
+
+  function revertState(e) {
+    e.preventDefault();
+    form.jDirtRestore();
+  }
+
+  function saveState(e) {
+    e.preventDefault();
+    form.jDirtCommitState();
+  }
+
+  deactivateButton();
+});
+
+        </pre>
+      </div>
+    </div>
+  
+
+</section>
+    </div>
+  </body>
+  <script src="javascripts/jquery-1.7.2.min.js" type="text/javascript"></script>
+  <script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
+  <script src="javascripts/jquery.deserialize.js" type="text/javascript"></script>
+  <script src="javascripts/jquery.jdirt.js" type="text/javascript"></script>
+  <!-- EXAMPLE SCRIPTS -->
+  <script src="javascripts/show.code.js" type="text/javascript"></script>
+  <script src="javascripts/usage.activate.js" type="text/javascript"></script>
+  <script src="javascripts/usage.revert.js" type="text/javascript"></script>
+  <script src="javascripts/usage.save.js" type="text/javascript"></script>
+</html>
